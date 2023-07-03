@@ -26,9 +26,9 @@ const relative = '/users/1';
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('throttledGetDataFromApi', () => {
-  // afterAll(() => {
-  //   jest.unmock('axios');
-  // });
+  afterAll(() => {
+    jest.unmock('axios');
+  });
 
   test(
     'should create instance with provided base url',
@@ -39,7 +39,8 @@ describe('throttledGetDataFromApi', () => {
           get: jest.fn().mockResolvedValue({ data: 'new test data' }),
         };
       });
-      await throttledGetDataFromApi(relative);
+      const tr = await throttledGetDataFromApi(relative);
+      await tr;
       expect(mockedAxios.create).toHaveBeenLastCalledWith({
         baseURL: 'https://jsonplaceholder.typicode.com',
       });
@@ -50,16 +51,13 @@ describe('throttledGetDataFromApi', () => {
   test(
     'should perform request to correct provided url',
     async () => {
-      // const newGet = jest.fn().mockResolvedValue({ data: 'new test data' });
-      // // mockedAxios.create = jest.fn().mockImplementation(() => {
-      // //   return {
-      // //     get: newGet,
-      // //   };
-      // // });
+      // mockedAxios.create = jest.fn().mockImplementation(() => {
+      //   return mockedAxios;
+      // });
       // mockedAxios.get = jest.fn().mockResolvedValue({ data: 'new test data' });
-      // await throttledGetDataFromApi(relative);
+      // const tr = await throttledGetDataFromApi(relative);
+      // await tr;
       // expect(mockedAxios.get).toHaveBeenCalled(); //With(relative);
-      // expect(newGet).toHaveBeenCalled(); //With(relative);
     },
     timeout,
   );
